@@ -637,6 +637,19 @@
       <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M15 6l-6 6 6 6"></path></svg> กลับ
     </button>
 
+    <div style="position:relative;border-radius:20px;overflow:hidden;border:1px solid #e3edf5;background:#12315b">
+      {{ dBannerImg }}
+      <div style="padding:12px 18px;display:flex;flex-wrap:wrap;gap:12px;align-items:center;background:#0d2547">
+        <span style="font-size:11.5px;font-weight:800;letter-spacing:.06em;color:#8fb6e2;text-transform:uppercase">ภาพหน้าจอจริงของแอป</span>
+        <button type="button" onClick="{{ openLive }}" style="margin-left:auto;flex:none;cursor:pointer;border:0;background:#1677d2;color:#fff;font-size:13.5px;font-weight:700;padding:10px 18px;border-radius:11px;display:flex;align-items:center;gap:9px">
+          <span style="width:22px;height:22px;border-radius:999px;background:rgba(255,255,255,.22);display:grid;place-items:center">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="#fff"><path d="M8 5.5l11 6.5-11 6.5z"></path></svg>
+          </span>
+          ทดลองใช้แบบ Live
+        </button>
+      </div>
+    </div>
+
     <div style="display:grid;grid-template-columns:minmax(0,1fr) 280px;gap:18px;align-items:start">
       <div style="background:#fff;border:1px solid #e3edf5;border-radius:18px;padding:20px;display:flex;flex-direction:column;gap:14px">
         <div style="display:flex;gap:14px;align-items:flex-start">
@@ -748,6 +761,49 @@
             <div style="padding:12px;font-size:12.5px;color:#17324d">{{ s.label }}</div>
           </div>
         </sc-for>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ dt8 }}" hint-placeholder-val="{{ false }}">
+      <div style="display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:16px;align-items:start">
+        <div style="background:#0d2547;border:1px solid #1b3f6d;border-radius:18px;padding:12px;display:flex;flex-direction:column;gap:10px">
+          <div style="display:flex;align-items:center;gap:10px;padding:2px 4px">
+            <span style="display:flex;gap:6px;flex:none">
+              <span style="width:11px;height:11px;border-radius:999px;background:#ec6a5e;display:block"></span>
+              <span style="width:11px;height:11px;border-radius:999px;background:#f4bf4f;display:block"></span>
+              <span style="width:11px;height:11px;border-radius:999px;background:#61c554;display:block"></span>
+            </span>
+            <span style="flex:1;min-width:0;background:#12315b;border:1px solid #2c5486;border-radius:8px;padding:6px 11px;font-size:12px;color:#cfe4f7;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ dLiveUrl }}</span>
+            <span style="flex:none;display:flex;align-items:center;gap:6px;font-size:11.5px;font-weight:700;color:#7ee0b8;background:#123f34;border:1px solid #1c5d4b;padding:5px 10px;border-radius:999px">
+              <span style="width:7px;height:7px;border-radius:999px;background:#39d98a;display:block"></span>LIVE · ข้อมูลตัวอย่าง
+            </span>
+          </div>
+          <div style="border-radius:12px;overflow:hidden;background:#091a30;position:relative">
+            {{ dLiveImg }}
+            <button type="button" onClick="{{ openLive }}" style="position:absolute;inset:0;width:100%;cursor:pointer;border:0;background:rgba(9,26,48,.34);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px">
+              <span style="width:66px;height:66px;border-radius:999px;background:#1677d2;display:grid;place-items:center;box-shadow:0 10px 30px rgba(22,119,210,.55)">
+                <svg width="26" height="26" viewBox="0 0 24 24" fill="#fff"><path d="M8 5.5l11 6.5-11 6.5z"></path></svg>
+              </span>
+              <span style="font-size:13.5px;font-weight:700;color:#fff;background:#0d2547;padding:7px 15px;border-radius:999px">คลิกเพื่อเริ่มทดลองใช้แบบเต็มจอ</span>
+            </button>
+          </div>
+          <div style="padding:2px 6px 4px;font-size:12px;color:#8fb6e2;line-height:1.6">ทดลองใช้บนข้อมูลจำลอง ไม่กระทบข้อมูลจริงของโรงพยาบาล และไม่ต้องติดตั้งอะไรก่อน</div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:12px">
+          <div style="background:#fff;border:1px solid #e3edf5;border-radius:16px;padding:16px;display:flex;flex-direction:column;gap:10px">
+            <div style="font-size:14.5px;font-weight:700;color:#12315b">ลองทำอะไรได้บ้าง</div>
+            <sc-for list="{{ liveTasks }}" as="t" hint-placeholder-count="3">
+              <div style="display:flex;gap:9px;font-size:12.5px;color:#41576b;line-height:1.6">
+                <span style="width:20px;height:20px;flex:none;border-radius:999px;background:#e8f2fd;color:#1677d2;font-size:11px;font-weight:800;display:grid;place-items:center;margin-top:1px">{{ t.n }}</span>
+                <span>{{ t.text }}</span>
+              </div>
+            </sc-for>
+          </div>
+          <div style="background:#f4faff;border:1px solid #cfe4f7;border-radius:16px;padding:16px;display:flex;flex-direction:column;gap:9px">
+            <div style="font-size:13.5px;font-weight:700;color:#12315b">ลองแล้วถูกใจ?</div>
+            <div style="font-size:12.5px;color:#41576b;line-height:1.6">กด “ขอเปิดใช้” ที่กล่องด้านบนขวา ระบบจะส่งคำขอให้ผู้ดูแลอนุมัติให้เอง</div>
+          </div>
+        </div>
       </div>
     </sc-if>
 
@@ -1176,7 +1232,7 @@
         </div>
       </div>
       <div style="font-size:12.5px;color:#5b6f82">พบผู้พัฒนา <b style="color:#12315b">{{ devFoundCount }}</b> ราย จากทั้งหมด {{ devTotal }} ราย</div>
-      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:10px;max-height:250px;overflow:auto;padding-right:4px">
+      <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px">
         <sc-for list="{{ devResults }}" as="d" hint-placeholder-count="6">
           <button type="button" onClick="{{ d.go }}" style="cursor:pointer;text-align:left;display:flex;gap:11px;align-items:center;border:1.5px solid {{ d.line }};background:{{ d.bg }};border-radius:14px;padding:11px" style-hover="border-color:#1677d2">
             <span style="position:relative;width:36px;height:36px;flex:none;border-radius:11px;background:{{ d.logoBg }};display:flex;align-items:center;justify-content:center;box-shadow:0 3px 9px rgba(21,59,91,.18)">
@@ -1191,6 +1247,17 @@
           </button>
         </sc-for>
       </div>
+      <sc-if value="{{ devPagerShow }}" hint-placeholder-val="{{ false }}">
+        <div style="display:flex;flex-wrap:wrap;gap:8px;align-items:center;border-top:1px solid #eef4fa;padding-top:12px">
+          <span style="font-size:12px;color:#5b6f82">{{ devRangeLabel }}</span>
+          <div style="margin-left:auto;display:flex;flex-wrap:wrap;gap:6px">
+            <sc-for list="{{ devPager }}" as="p" hint-placeholder-count="3">
+              <button type="button" onClick="{{ p.go }}" style="cursor:pointer;min-width:34px;height:34px;border-radius:9px;border:1px solid {{ p.line }};background:{{ p.bg }};color:{{ p.fg }};font-size:12.5px;font-weight:700">{{ p.n }}</button>
+            </sc-for>
+          </div>
+        </div>
+      </sc-if>
+
       <sc-if value="{{ devNoResult }}" hint-placeholder-val="{{ false }}">
         <div style="border:1px dashed #cfe4f7;border-radius:14px;padding:16px;font-size:13px;color:#41576b">ไม่พบผู้พัฒนาที่ตรงกับคำค้น — ลองพิมพ์เพียงบางส่วนของชื่อ เช่น “เวอร์เท็กซ์” หรือเปลี่ยนตัวกรองแหล่งที่มา</div>
       </sc-if>
@@ -1268,7 +1335,7 @@
     <div style="background:#fff;border-radius:22px;max-width:860px;width:100%;max-height:86vh;overflow:auto;box-shadow:0 24px 60px rgba(9,26,48,.35)">
       <div style="background:#12315b;color:#fff;padding:24px 28px">
         <div style="font-size:12px;font-weight:700;letter-spacing:.06em;color:#8fb6e2;text-transform:uppercase;margin-bottom:8px">ยินดีต้อนรับ</div>
-        <div style="font-size:26px;font-weight:700;line-height:1.35">ที่นี่คือที่รวมเครื่องมือเสริมสำหรับ HOSxP ที่โรงพยาบาลของคุณเปิดใช้เพิ่มได้</div>
+        <div style="font-size:26px;font-weight:700;line-height:1.35">แหล่งรวมแอปที่ช่วยคุณแก้ปัญหา และช่วยงานให้สะดวกขึ้น</div>
         <div style="font-size:13.5px;color:#cfe4f7;margin-top:8px">อ่าน 20 วินาที แล้วเลือกได้ว่าจะดูเองหรือให้เราช่วยเลือก</div>
       </div>
       <div style="padding:24px 28px;display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:16px">
@@ -1291,8 +1358,60 @@
       </div>
       <div style="padding:0 28px 24px;display:flex;flex-wrap:wrap;gap:10px;align-items:center">
         <button type="button" onClick="{{ openWizard }}" style="cursor:pointer;border:0;background:#1677d2;color:#fff;font-size:14px;font-weight:700;padding:13px 22px;border-radius:12px">ช่วยเลือกให้ (3 คำถาม)</button>
+        <button type="button" onClick="{{ openVideo }}" style="cursor:pointer;border:1.5px solid #cfe4f7;background:#f4faff;color:#125fa8;font-size:14px;font-weight:700;padding:12px 18px;border-radius:12px;display:flex;align-items:center;gap:9px">
+          <span style="width:26px;height:26px;flex:none;border-radius:999px;background:#1677d2;display:grid;place-items:center">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="#fff"><path d="M8 5.5l11 6.5-11 6.5z"></path></svg>
+          </span>
+          ดูวิดีโอแนะนำ · 1:30 นาที
+        </button>
         <button type="button" onClick="{{ closeOnb }}" style="cursor:pointer;border:1px solid #e3edf5;background:#fff;color:#17324d;font-size:14px;font-weight:600;padding:13px 20px;border-radius:12px">ขอดูเองก่อน</button>
         <span style="font-size:12px;color:#6b7d90;margin-left:auto">เรียกกลับมาดูใหม่ได้ที่ปุ่ม “วิธีใช้หน้านี้”</span>
+      </div>
+    </div>
+  </div>
+  </sc-if>
+
+  <sc-if value="{{ liveOn }}" hint-placeholder-val="{{ false }}">
+  <div data-screen-label="Live preview" style="position:fixed;inset:0;z-index:220;background:rgba(9,26,48,.8);display:flex;align-items:center;justify-content:center;padding:22px">
+    <div style="background:#0d2547;border:1px solid #1b3f6d;border-radius:18px;max-width:1180px;width:100%;overflow:hidden;box-shadow:0 26px 70px rgba(9,26,48,.5)">
+      <div style="padding:12px 16px;display:flex;align-items:center;gap:11px;border-bottom:1px solid #1b3f6d">
+        <span style="display:flex;gap:6px;flex:none">
+          <span style="width:11px;height:11px;border-radius:999px;background:#ec6a5e;display:block"></span>
+          <span style="width:11px;height:11px;border-radius:999px;background:#f4bf4f;display:block"></span>
+          <span style="width:11px;height:11px;border-radius:999px;background:#61c554;display:block"></span>
+        </span>
+        <span style="flex:1;min-width:0;background:#12315b;border:1px solid #2c5486;border-radius:8px;padding:6px 11px;font-size:12px;color:#cfe4f7;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ dLiveUrl }}</span>
+        <span style="flex:none;display:flex;align-items:center;gap:6px;font-size:11.5px;font-weight:700;color:#7ee0b8;background:#123f34;border:1px solid #1c5d4b;padding:5px 10px;border-radius:999px">
+          <span style="width:7px;height:7px;border-radius:999px;background:#39d98a;display:block"></span>LIVE · ข้อมูลตัวอย่าง
+        </span>
+        <button type="button" onClick="{{ closeLive }}" style="flex:none;cursor:pointer;border:1px solid #2c5486;background:#12315b;color:#cfe4f7;font-size:12.5px;font-weight:600;padding:7px 13px;border-radius:9px">ปิด</button>
+      </div>
+      <div style="background:#091a30;max-height:74vh;overflow:auto">
+        {{ dModalImg }}
+      </div>
+      <div style="padding:12px 16px;display:flex;flex-wrap:wrap;gap:10px;align-items:center;border-top:1px solid #1b3f6d">
+        <span style="font-size:12.5px;color:#8fb6e2;line-height:1.5">กำลังทดลองใช้ {{ dName }} บนข้อมูลจำลอง — ไม่กระทบข้อมูลจริง</span>
+        <button type="button" onClick="{{ closeLive }}" style="margin-left:auto;cursor:pointer;border:0;background:#1677d2;color:#fff;font-size:13.5px;font-weight:700;padding:10px 18px;border-radius:11px">ถูกใจ — ไปขอเปิดใช้</button>
+      </div>
+    </div>
+  </div>
+  </sc-if>
+
+  <sc-if value="{{ onbVideo }}" hint-placeholder-val="{{ false }}">
+  <div data-screen-label="S0.4 วิดีโอแนะนำ" style="position:fixed;inset:0;z-index:210;background:rgba(9,26,48,.72);display:flex;align-items:center;justify-content:center;padding:24px">
+    <div style="background:#0d2547;border-radius:20px;max-width:840px;width:100%;overflow:hidden;box-shadow:0 24px 60px rgba(9,26,48,.45)">
+      <div style="padding:16px 20px;display:flex;align-items:center;gap:12px;border-bottom:1px solid #1b3f6d">
+        <div>
+          <div style="font-size:15.5px;font-weight:700;color:#fff">วิดีโอแนะนำ · เริ่มใช้งานใน 3 ขั้นตอน</div>
+          <div style="font-size:12.5px;color:#8fb6e2;margin-top:2px">ความยาว 1 นาที 30 วินาที</div>
+        </div>
+        <button type="button" onClick="{{ backToWelcome }}" style="margin-left:auto;cursor:pointer;border:1px solid #2c5486;background:#12315b;color:#cfe4f7;font-size:13px;font-weight:600;padding:8px 14px;border-radius:10px">ปิด</button>
+      </div>
+      <div style="aspect-ratio:16/9;background:#091a30;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px">
+        <span style="width:70px;height:70px;border-radius:999px;background:#1677d2;display:grid;place-items:center;box-shadow:0 10px 30px rgba(22,119,210,.5)">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="#fff"><path d="M8 5.5l11 6.5-11 6.5z"></path></svg>
+        </span>
+        <div style="font-size:13.5px;color:#8fb6e2;text-align:center;max-width:420px;line-height:1.6">พื้นที่สำหรับวางวิดีโอแนะนำ — ส่งไฟล์วิดีโอหรือลิงก์มาได้ แล้วจะฝังลงตรงนี้ให้</div>
       </div>
     </div>
   </div>
@@ -1301,12 +1420,22 @@
   <sc-if value="{{ onbWizard }}" hint-placeholder-val="{{ false }}">
   <div data-screen-label="S0.2 ตัวช่วยเลือก" style="position:fixed;inset:0;z-index:200;background:rgba(9,26,48,.55);display:flex;align-items:center;justify-content:center;padding:24px">
     <div style="background:#fff;border-radius:22px;max-width:660px;width:100%;max-height:86vh;overflow:auto;box-shadow:0 24px 60px rgba(9,26,48,.35)">
-      <div style="padding:20px 24px;border-bottom:1px solid #e3edf5;display:flex;align-items:center;gap:12px">
-        <span style="font-size:16px;font-weight:700;color:#12315b">ตัวช่วยเลือก</span>
-        <span style="font-size:12px;font-weight:600;color:#1677d2;background:#e8f2fd;padding:4px 10px;border-radius:999px">{{ wizStepLabel }}</span>
-        <button type="button" onClick="{{ closeOnb }}" style="margin-left:auto;cursor:pointer;border:0;background:transparent;color:#6b7d90;font-size:13px;font-weight:600">ปิด</button>
+      <div style="background:#12315b;color:#fff;padding:22px 26px;display:flex;align-items:flex-start;gap:12px">
+        <div>
+          <div style="font-size:12px;font-weight:700;letter-spacing:.06em;color:#8fb6e2;text-transform:uppercase;margin-bottom:7px">ตัวช่วยเลือก</div>
+          <div style="font-size:22px;font-weight:700;line-height:1.35">ตอบ 3 ข้อ แล้วเราจะกรองแอปที่ใช่ให้คุณ</div>
+        </div>
+        <button type="button" onClick="{{ closeOnb }}" style="margin-left:auto;flex:none;cursor:pointer;border:1px solid #2c5486;background:#1b3f6d;color:#cfe4f7;font-size:12.5px;font-weight:600;padding:7px 13px;border-radius:10px">ปิด</button>
       </div>
-      <div style="height:4px;background:#eef4fa"><div style="height:4px;background:#1677d2;width:{{ wizBarW }}"></div></div>
+      <div style="padding:20px 26px 18px;background:#fbfdff;border-bottom:1px solid #eef4fa;display:flex;align-items:flex-start">
+        <sc-for list="{{ wizNodes }}" as="w" hint-placeholder-count="4">
+          <div style="flex:1;min-width:0;display:flex;flex-direction:column;align-items:center;gap:9px;position:relative">
+            <div style="position:absolute;top:17px;right:50%;width:100%;height:2px;background:{{ w.railBg }};display:{{ w.railShow }}"></div>
+            <span style="position:relative;z-index:1;width:36px;height:36px;border-radius:999px;display:grid;place-items:center;font-size:14px;font-weight:800;border:2px solid {{ w.line }};background:{{ w.bg }};color:{{ w.fg }};box-shadow:{{ w.glow }}">{{ w.n }}</span>
+            <span style="font-size:11.5px;font-weight:700;color:{{ w.labelFg }};text-align:center;line-height:1.4">{{ w.label }}</span>
+          </div>
+        </sc-for>
+      </div>
       <sc-if value="{{ wizIsQ }}" hint-placeholder-val="{{ true }}">
       <div style="padding:24px;display:flex;flex-direction:column;gap:16px">
         <div>
@@ -1779,6 +1908,9 @@ class Component extends DCLogic {
       (!s.dsrc || s.dsrc === 'all' || d.src === s.dsrc) &&
       (!dq || d.name.indexOf(dq) >= 0 || d.typeLabel.indexOf(dq) >= 0));
     const sel = DEVLIST.find(d => d.name === s.dsel) || devFound[0] || DEVLIST[0];
+    const DEV_PER_PAGE = 9;
+    const devPages = Math.max(1, Math.ceil(devFound.length / DEV_PER_PAGE));
+    const devPage = Math.min(s.dpage || 0, devPages - 1);
 
     const tip = key => ({
       show: s.tip === key ? 'block' : 'none',
@@ -1969,7 +2101,7 @@ class Component extends DCLogic {
     const browseResults = results;
 
 
-    const detailTabs = ['ภาพรวม', 'ภาพหน้าจอ', 'คะแนนและรีวิว', 'ข้อมูลและสิทธิ์', 'ผู้พัฒนาและการดูแล', 'การติดตั้ง', 'คู่มือ', 'ประวัติเวอร์ชัน'].map((label, i) => ({
+    const detailTabs = ['ภาพรวม', 'ทดลองใช้ (Live)', 'ภาพหน้าจอ', 'คะแนนและรีวิว', 'ข้อมูลและสิทธิ์', 'ผู้พัฒนาและการดูแล', 'การติดตั้ง', 'คู่มือ', 'ประวัติเวอร์ชัน'].map((label, i) => ({
       label, go: () => this.setState({ dtab: i }),
       fg: i === s.dtab ? '#12315b' : '#6b7d90', line: i === s.dtab ? '#1677d2' : 'transparent'
     }));
@@ -2067,6 +2199,9 @@ class Component extends DCLogic {
       onbWelcome: s.onb === 'welcome',
       onbWizard: s.onb === 'wizard',
       onbGloss: s.onb === 'gloss',
+      onbVideo: s.onb === 'video',
+      openVideo: () => this.setState({ onb: 'video' }),
+      backToWelcome: () => this.setState({ onb: 'welcome' }),
       railOn: !s.railOff && s.page === 'home',
       openWizard: () => this.setState({ onb: 'wizard', wiz: 0 }),
       openGloss: setOnb('gloss'),
@@ -2083,6 +2218,19 @@ class Component extends DCLogic {
       wizIsQ: s.wiz < 3,
       wizIsResult: s.wiz >= 3,
       wizStepLabel: s.wiz >= 3 ? 'สรุปผล' : 'ข้อ ' + (wizStep + 1) + ' จาก 3',
+      wizNodes: ['งานที่คุณทำ', 'ปัญหาที่อยากแก้', 'สิ่งที่ต้องการ', 'ผลลัพธ์'].map((label, i) => {
+        const done = i < s.wiz, cur = i === s.wiz;
+        return {
+          label, n: done ? '✓' : String(i + 1),
+          bg: done ? '#16a394' : cur ? '#1677d2' : '#fff',
+          line: done ? '#16a394' : cur ? '#7fb6ea' : '#dfe7ee',
+          fg: done || cur ? '#fff' : '#5b6f82',
+          glow: cur ? '0 0 0 5px rgba(22,119,210,.14)' : 'none',
+          labelFg: done ? '#127f58' : cur ? '#12315b' : '#5b6f82',
+          railShow: i === 0 ? 'none' : 'block',
+          railBg: i <= s.wiz ? '#16a394' : '#e6eef6'
+        };
+      }),
       wizQTitle: wq.q,
       wizAxis: wq.axis,
       wizBarW: Math.round(Math.min(s.wiz, 3) / 3 * 100) + '%',
@@ -2161,8 +2309,21 @@ class Component extends DCLogic {
       })),
       clearFilters: () => this.setState({ filters: [] }),
 
-      detailTabs, dt0: s.dtab === 0, dt1: s.dtab === 1, dt2: s.dtab === 2, dt3: s.dtab === 3,
-      dt4: s.dtab === 4, dt5: s.dtab === 5, dt6: s.dtab === 6, dt7: s.dtab === 7,
+      detailTabs, dt0: s.dtab === 0, dt8: s.dtab === 1, dt1: s.dtab === 2, dt2: s.dtab === 3, dt3: s.dtab === 4,
+      dt4: s.dtab === 5, dt5: s.dtab === 6, dt6: s.dtab === 7, dt7: s.dtab === 8,
+      dBannerImg: React.createElement('img', { src: 'assets/banners/' + dsel.id + '.png', alt: '', style: { width: '100%', aspectRatio: '21/4', objectFit: 'cover', objectPosition: 'center top', display: 'block' } }),
+      dLiveImg: React.createElement('img', { src: 'assets/banners/' + dsel.id + '.png', alt: '', style: { width: '100%', aspectRatio: '16/9', objectFit: 'cover', objectPosition: 'center top', display: 'block' } }),
+      dModalImg: React.createElement('img', { src: 'assets/banners/' + dsel.id + '.png', alt: '', style: { width: '100%', display: 'block' } }),
+      dCover: dsel.cover || dsel.short || '',
+      dLiveUrl: 'https://demo.marketplace.bms.co.th/' + dsel.id + '?mode=sandbox',
+      liveOn: !!s.live,
+      openLive: () => this.setState({ live: true }),
+      closeLive: () => this.setState({ live: false }),
+      liveTasks: [
+        { n: '1', text: 'กดดูข้อมูลตัวอย่างในหน้าจอจริงของแอป ไม่ต้องล็อกอิน' },
+        { n: '2', text: 'ลองใช้เมนูและปุ่มหลัก ดูว่าขั้นตอนตรงกับงานที่คุณทำอยู่ไหม' },
+        { n: '3', text: 'ปิดเมื่อไรก็ได้ ข้อมูลทดลองจะถูกล้างทิ้งอัตโนมัติ' }
+      ],
       bCert: tip('cert'), bTier: tip('tier'), bSla: tip('sla'), bVer: tip('ver'), bNps: tip('nps'), bNps2: tip('nps2'),
       dName: dsel.name, dIconD: dsel.iconD, dIconColor: AXIS.capability.color,
       dBadgeLabel: BADGELABEL[dsel.badge] + (dsel.badge === 'certified' ? ' · 81 คะแนน' : ''),
@@ -2228,21 +2389,28 @@ class Component extends DCLogic {
       ],
       fairnessRules, transparency,
 
-      dq: s.dq || '', onDq: e => this.setState({ dq: e.target.value }),
+      dq: s.dq || '', onDq: e => this.setState({ dq: e.target.value, dpage: 0 }),
       devSrcTabs: DEVSRC.map(([key, label]) => {
         const on = (s.dsrc || 'all') === key;
-        return { label, go: () => this.setState({ dsrc: key }), bg: on ? '#12315b' : '#fff', fg: on ? '#fff' : '#17324d', line: on ? '#12315b' : '#e3edf5' };
+        return { label, go: () => this.setState({ dsrc: key, dpage: 0 }), bg: on ? '#12315b' : '#fff', fg: on ? '#fff' : '#17324d', line: on ? '#12315b' : '#e3edf5' };
       }),
       devTotal: DEVLIST.length,
       devFoundCount: devFound.length,
       devNoResult: devFound.length === 0,
-      devResults: devFound.map(d => {
+      devResults: devFound.slice(devPage * DEV_PER_PAGE, devPage * DEV_PER_PAGE + DEV_PER_PAGE).map(d => {
         const on = d.name === sel.name;
         return Object.assign({}, d, {
           go: () => this.setState({ dsel: d.name }),
           line: on ? '#1677d2' : '#e3edf5', bg: on ? '#f4f9ff' : '#fff'
         });
       }),
+      devPager: Array.from({ length: devPages }, (_, i) => ({
+        n: String(i + 1), go: () => this.setState({ dpage: i }),
+        bg: i === devPage ? '#12315b' : '#fff', fg: i === devPage ? '#fff' : '#17324d',
+        line: i === devPage ? '#12315b' : '#e3edf5'
+      })),
+      devPagerShow: devPages > 1,
+      devRangeLabel: devFound.length ? 'แสดง ' + (devPage * DEV_PER_PAGE + 1) + '–' + Math.min(devFound.length, devPage * DEV_PER_PAGE + DEV_PER_PAGE) + ' จาก ' + devFound.length + ' ราย' : '',
       devName: sel.name, devAb: sel.ab, devColor: sel.color, devIconBg: sel.iconBg, devIconLine: sel.iconLine,
       devLogoD: sel.logoD, devLogoBg: sel.logoBg, devGlyph: sel.glyph, devBmsLogo: sel.bmsLogo, devAbShow: sel.abShow,
       devTypeLabel: sel.typeLabel, devVerifyLabel: sel.verifyLabel, devVerifyColor: sel.verifyColor, devMeta: sel.meta,
