@@ -566,10 +566,10 @@
             <sc-if value="{{ g.open }}" hint-placeholder-val="{{ true }}">
               <div style="margin-top:9px;display:flex;flex-direction:column;gap:7px">
                 <sc-for list="{{ g.options }}" as="o" hint-placeholder-count="4">
-                  <button type="button" onClick="{{ o.toggle }}" title="{{ o.label }}" style="cursor:pointer;border:0;background:transparent;padding:0;text-align:left;display:flex;align-items:flex-start;gap:8px;font-size:12.5px;color:#17324d">
-                    <span style="width:16px;height:16px;border-radius:5px;flex:none;margin-top:1px;display:grid;place-items:center;font-size:10px;color:#ffffff;border:1.5px solid {{ o.boxLine }};background:{{ o.boxBg }}">{{ o.mark }}</span>
-                    <span style="flex:1;min-width:0;white-space:normal;overflow-wrap:anywhere;line-height:1.45">{{ o.label }}</span>
-                    <span style="font-size:11px;color:#5b6f82;font-weight:700;flex:none;margin-top:1px">{{ o.count }}</span>
+                  <button type="button" onClick="{{ o.toggle }}" style="cursor:pointer;border:0;background:transparent;padding:0;text-align:left;display:flex;align-items:center;gap:8px;font-size:12.5px;color:#17324d">
+                    <span style="width:16px;height:16px;border-radius:5px;flex:none;display:grid;place-items:center;font-size:10px;color:#ffffff;border:1.5px solid {{ o.boxLine }};background:{{ o.boxBg }}">{{ o.mark }}</span>
+                    <span style="flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ o.label }}</span>
+                    <span style="font-size:11px;color:#5b6f82;font-weight:700">{{ o.count }}</span>
                   </button>
                 </sc-for>
               </div>
@@ -1495,44 +1495,6 @@ const ADDONS = [
     [{label:'ลดคิวลดแออัด',axis:'mission'},{label:'รพ.สต.',axis:'persona'},{label:'จอแสดงผล/Kiosk',axis:'capability'}], 5.0, 1, 52, 'ฟรี')
 ];
 const DIMSEED = { phr: { r: [4.8, 4.5, 4.9, 4.1, 4.4, 3.8], nps: 62 } };
-
-const MODULE_ORDER = [
-  'Doctor Workbench - Telemedicine',
-  'Doctor Workbench - Med Refill',
-  'Doctor Workbench - ER',
-  'Doctor Workbench - ICD11 Finding',
-  'Doctor Workbench - Scribe (ASR)',
-  'IPD Maternity - OneLR',
-  'Nurse Workbench - Screening',
-  'OPD - Registry',
-  'System - WelcomeScreen',
-  'System - AI Chatbot'
-];
-const MODULES = {
-  teleconsult: ['Doctor Workbench - Telemedicine'],
-  stock: ['Doctor Workbench - Med Refill'],
-  er: ['Doctor Workbench - ER'],
-  kpi: ['Doctor Workbench - ICD11 Finding'],
-  opdflow: ['Doctor Workbench - ICD11 Finding'],
-  scribe: ['Doctor Workbench - Scribe (ASR)'],
-  ocr: ['Doctor Workbench - Scribe (ASR)', 'Doctor Workbench - ICD11 Finding'],
-  nurse: ['Nurse Workbench - Screening'],
-  mental: ['Nurse Workbench - Screening'],
-  ncds: ['OPD - Registry'],
-  phr: ['OPD - Registry'],
-  queue: ['OPD - Registry'],
-  pcuq: ['OPD - Registry'],
-  appt: ['OPD - Registry'],
-  hie: ['OPD - Registry'],
-  exec: ['System - WelcomeScreen'],
-  nhso: ['System - WelcomeScreen'],
-  drug: ['System - WelcomeScreen'],
-  lab: ['System - WelcomeScreen'],
-  labstat: ['System - WelcomeScreen'],
-  bed: ['System - WelcomeScreen'],
-  shift: ['System - WelcomeScreen'],
-  aiassist: ['System - AI Chatbot']
-};
 ADDONS.forEach(a => {
   if (DIMSEED[a.id]) { a.dims = DIMSEED[a.id].r; a.nps = DIMSEED[a.id].nps; return; }
   if (!a.rating) { a.dims = null; a.nps = null; return; }
@@ -1869,7 +1831,6 @@ class Component extends DCLogic {
       ['mission', 'โจทย์ที่ต้องการแก้', 'แกน B', AXIS.mission],
       ['persona', 'ผู้ใช้งาน', 'แกน D', AXIS.persona],
       ['capability', 'ความสามารถ', 'แกน C', AXIS.capability],
-      ['module', 'โมดูล HOSxP', 'แกน G', { color: '#0f6b8c', bg: '#e4f2f8' }],
       ['source', 'แหล่งที่มา', 'แกน F', { color: '#5238bd', bg: '#efebfe' }],
       ['stars', 'ระดับดาวจากผู้ใช้', 'ชั้น 2', { color: '#9a6f0f', bg: '#fbf1dc' }],
       ['pricing', 'รูปแบบราคา', 'แกน E', AXIS.domain],
@@ -1885,9 +1846,7 @@ class Component extends DCLogic {
       addOpt('pricing', priceKind(a));
       addOpt('badge', BADGELABEL[a.badge]);
       addOpt('domain', a.cat);
-      (MODULES[a.id] || []).forEach(m => addOpt('module', m));
     });
-    OPTS.module = MODULE_ORDER.slice();
     OPTS.stars = ['★ 4.5 ขึ้นไป', '★ 4.0 ขึ้นไป', '★ 3.5 ขึ้นไป', '★ 3.0 ขึ้นไป'];
 
     const valuesOf = (a, g) =>
@@ -1895,7 +1854,6 @@ class Component extends DCLogic {
       : g === 'pricing' ? [priceKind(a)]
       : g === 'badge' ? [BADGELABEL[a.badge]]
       : g === 'domain' ? [a.cat]
-      : g === 'module' ? (MODULES[a.id] || [])
       : g === 'stars' ? OPTS.stars.filter(l => a.rating >= Number(l.replace(/[^0-9.]/g, '')))
       : a.tags.filter(tg => tg.axis === g).map(tg => tg.label);
 
@@ -1946,8 +1904,7 @@ class Component extends DCLogic {
           boxBg: on ? '#1677d2' : '#fff', boxLine: on ? '#1677d2' : '#cfd9e3',
           toggle: () => this.setState(st => ({ filters: st.filters.indexOf(label) >= 0 ? st.filters.filter(f => f !== label) : st.filters.concat([label]) }))
         };
-      }).filter(o => o.count > 0 || o.on || g === 'module');
-      if (g !== 'module') options.sort((a, b) => b.count - a.count);
+      }).filter(o => o.count > 0 || o.on).sort((a, b) => b.count - a.count);
       return {
         title, axis, axisColor: ax.color, axisBg: ax.bg,
         open: !closed, mark: closed ? '▸' : '▾',
