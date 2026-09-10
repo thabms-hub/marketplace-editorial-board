@@ -15,7 +15,7 @@ date: 2026-09-10T04:06:40Z
 | หน้าจอในคอนโซล | อ้างจากไฟล์ |
 |---|---|
 | M18 พรีวิว (ฉบับร่าง) | bms-marketplace-preview/BMS Marketplace.dc.html (ในโปรเจกต์นี้) |
-| M18 พรีวิว (หน้าจริง) | https://thabms-hub.github.io/marketplace-editorial-board/bms-marketplace-preview/BMS%20Marketplace.dc.html |
+| M18 พรีวิว (หน้าจริง) | https://claude.ai/code/artifact/d43c2b6d-7d18-4bc4-babc-eee207656708 (ผู้ใช้กำหนดเป็นปลายทาง production) |
 | ทะเบียนผลิตภัณฑ์ · คิว · ห้องตรวจ | ADDONS / MODULES / DEVLIST ในไฟล์หน้าร้าน |
 | รางวัล · ชุดคัดสรร · Hero · อภิธานศัพท์ | AWARDS / AWARDED / COLLS / HERO / GLOSSARY |
 

@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <script src="./support.js"></script>
+<template id="__bundler_thumbnail"><svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg"><rect width="120" height="120" rx="18" fill="#0d2745"/><rect x="36" y="36" width="48" height="48" rx="10" fill="#1677d2"/><text x="60" y="70" text-anchor="middle" font-family="Inter,Arial,sans-serif" font-size="22" font-weight="700" fill="#ffffff">EC</text></svg></template>
 </head>
 <body>
 <x-dc>
@@ -751,8 +752,53 @@
                   <div style="font-size:11px; font-weight:600; color:#cfe0f2; white-space:nowrap">{{ b.zone }}</div>
                 </div>
                 <iframe src="{{ b.url }}" title="พรีวิวหน้าร้าน" style="width:100%; height:560px; border:none; border-radius:9px; background:#fff; display:block"></iframe>
+                <div style="display:flex; align-items:center; gap:10px; flex-wrap:wrap; padding:9px 6px 2px">
+                  <a href="{{ b.url }}" target="_blank" rel="noreferrer" style="font-size:12px; font-weight:600; color:#9dbfe0; text-decoration:none; border-bottom:1px dotted #4a6f96">{{ b.openLabel }}</a>
+                  <span style="font-size:11px; color:#7fa3ca">ถ้ากรอบด้านบนว่าง แปลว่าปลายทางปิดกั้นการฝัง — กดลิงก์นี้เพื่อดูเต็มหน้าจอ</span>
+                </div>
               </div>
               <div style="font-size:11.5px; color:#6b7d90; line-height:1.6; text-wrap:pretty">โซนในหน้านี้: {{ b.zoneNote }}</div>
+            </section>
+          </sc-if>
+
+          <sc-if value="{{ b.isAcc }}" hint-placeholder-val="{{ false }}">
+            <section style="display:flex; flex-direction:column; gap:9px">
+              <div>
+                <div style="font-size:14.5px; font-weight:600">{{ b.title }}</div>
+                <div style="font-size:12px; color:#5b6f82; margin-top:3px; line-height:1.6; text-wrap:pretty">{{ b.note }}</div>
+              </div>
+              <sc-for list="{{ b.lanes }}" as="ln" hint-placeholder-count="4">
+                <div style="background:#fff; border:1px solid #dbe6f0; border-radius:12px; overflow:hidden; box-shadow:0 6px 20px rgba(21,59,91,.05)">
+                  <div onClick="{{ ln.go }}" style="display:flex; align-items:center; gap:10px; flex-wrap:wrap; padding:11px 15px; cursor:pointer; background:{{ ln.bg }}; color:{{ ln.fg }}" style-hover="filter:brightness(1.04)">
+                    <span style="font-family:Inter,sans-serif; font-size:13px; font-weight:700">{{ ln.sign }} {{ ln.code }}</span>
+                    <span style="font-size:14px; font-weight:600; flex:1; min-width:160px">{{ ln.title }}</span>
+                    <span style="font-family:Inter,sans-serif; font-size:12px; font-weight:600; opacity:.85">{{ ln.count }}</span>
+                    <span style="padding:2px 9px; border-radius:999px; font-size:11.5px; font-weight:600; background:{{ ln.vbg }}; color:{{ ln.vfg }}; white-space:nowrap">{{ ln.veto }}</span>
+                    <span style="font-size:11px; font-weight:600; opacity:.75; white-space:nowrap">{{ ln.hint }}</span>
+                  </div>
+                  <sc-for list="{{ ln.items }}" as="ci" hint-placeholder-count="0">
+                    <div style="padding:11px 15px; border-top:1px solid #eef3f8; display:flex; flex-direction:column; gap:7px">
+                      <div style="display:flex; align-items:baseline; gap:9px; flex-wrap:wrap">
+                        <span style="font-family:Inter,sans-serif; font-size:12px; font-weight:700; color:{{ ci.chipFg }}; background:{{ ci.chipBg }}; border-radius:6px; padding:2px 8px; white-space:nowrap">{{ ci.code }}</span>
+                        <span style="font-size:13.5px; font-weight:600; flex:1; min-width:200px; line-height:1.5; text-wrap:pretty">{{ ci.title }}</span>
+                        <span style="padding:2px 9px; border-radius:999px; font-size:11px; font-weight:600; background:{{ ci.cbg }}; color:{{ ci.cfg }}; white-space:nowrap">{{ ci.checker }}</span>
+                      </div>
+                      <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(250px,1fr)); gap:8px">
+                        <div style="background:#f5f8fb; border-radius:9px; padding:8px 11px">
+                          <div style="font-size:11px; font-weight:700; color:#5b6f82; letter-spacing:.04em; margin-bottom:3px">{{ ci.evLabel }}</div>
+                          <div style="font-size:12.5px; color:#41576b; line-height:1.6; text-wrap:pretty">{{ ci.evidence }}</div>
+                        </div>
+                        <sc-if value="{{ ci.fail }}" hint-placeholder-val="{{ false }}">
+                          <div style="background:#fdf0ee; border-radius:9px; padding:8px 11px">
+                            <div style="font-size:11px; font-weight:700; color:#8f231b; letter-spacing:.04em; margin-bottom:3px">{{ ci.failLabel }}</div>
+                            <div style="font-size:12.5px; color:#7a1710; line-height:1.6; text-wrap:pretty">{{ ci.fail }}</div>
+                          </div>
+                        </sc-if>
+                      </div>
+                    </div>
+                  </sc-for>
+                </div>
+              </sc-for>
             </section>
           </sc-if>
 
@@ -775,7 +821,14 @@
               <div style="font-size:13px; font-weight:600; color:#12315b">{{ b.title }}</div>
               <div style="display:flex; gap:7px; flex-wrap:wrap; flex:1 1 320px; min-width:0">
                 <sc-for list="{{ b.items }}" as="bi" hint-placeholder-count="0">
-                  <div onClick="{{ bi.go }}" style="padding:8px 14px; border-radius:9px; font-size:12.5px; font-weight:600; cursor:pointer; white-space:nowrap; background:{{ bi.bg }}; color:{{ bi.fg }}; border:1px solid {{ bi.line }}" style-hover="filter:brightness(1.06)">{{ bi.label }}</div>
+                  <div style="display:flex">
+                    <sc-if value="{{ bi.href }}" hint-placeholder-val="{{ false }}">
+                      <a href="{{ bi.href }}" target="_blank" rel="noreferrer" style="padding:8px 14px; border-radius:9px; font-size:12.5px; font-weight:600; text-decoration:none; white-space:nowrap; background:{{ bi.bg }}; color:{{ bi.fg }}; border:1px solid {{ bi.line }}">{{ bi.label }}</a>
+                    </sc-if>
+                    <sc-if value="{{ bi.isBtn }}" hint-placeholder-val="{{ true }}">
+                      <div onClick="{{ bi.go }}" style="padding:8px 14px; border-radius:9px; font-size:12.5px; font-weight:600; cursor:pointer; white-space:nowrap; background:{{ bi.bg }}; color:{{ bi.fg }}; border:1px solid {{ bi.line }}" style-hover="filter:brightness(1.06)">{{ bi.label }}</div>
+                    </sc-if>
+                  </div>
                 </sc-for>
               </div>
               <div style="font-size:11.5px; color:#6b7d90; flex:1 1 200px; min-width:0; text-wrap:pretty">{{ b.note }}</div>
@@ -949,7 +1002,9 @@
           </sc-if>
         </div>
         <div style="padding:14px 20px; border-top:1px solid #e9f0f7; display:flex; gap:9px; justify-content:flex-end; flex-wrap:wrap">
-          <div onClick="{{ dlg.close }}" style="padding:9px 16px; border-radius:10px; border:1px solid #d9e4ee; color:#41576b; font-size:13px; font-weight:600; cursor:pointer">ยกเลิก</div>
+          <sc-if value="{{ dlg.showCancel }}" hint-placeholder-val="{{ true }}">
+            <div onClick="{{ dlg.close }}" style="padding:9px 16px; border-radius:10px; border:1px solid #d9e4ee; color:#41576b; font-size:13px; font-weight:600; cursor:pointer">ยกเลิก</div>
+          </sc-if>
           <div onClick="{{ dlg.confirm }}" style="padding:9px 18px; border-radius:10px; background:{{ dlg.fg }}; color:#fff; font-size:13px; font-weight:600; cursor:pointer">{{ dlg.confirmLabel }}</div>
         </div>
       </div>
@@ -1099,6 +1154,56 @@ const ROLEDOC = {
   R8: ['ผู้ประสานงานผู้พัฒนา', 'ช่วยผู้พัฒนาให้ผ่าน ไม่ใช่รอให้ผ่าน — ตัวชี้วัดคือจำนวนผู้พัฒนาที่ยังส่งงานอยู่', ['ตอบคำถามผู้พัฒนาใน SLA 2 วันทำการ', 'จัดคลินิกออนไลน์รายสัปดาห์', 'ติดตามรายที่ถูกตีกลับแล้วเงียบ', 'มอบหมายและมอบต่อผู้ตรวจ · เลื่อนกำหนดพร้อมเหตุผล', 'รวบรวมรายงานความโปร่งใส'], ['ตรวจหรือให้คะแนนชิ้นงาน', 'อนุมัติเผยแพร่', 'อนุมัติแบบหมู่ในชั้น A (ระบบไม่มีปุ่มนี้)']]
 };
 
+
+const CRITERIA = {
+  A1: { title: 'ความเป็นส่วนตัวและสิทธิ์ข้อมูล', veto: true, owner: 'Developer Portal', items: [
+    ['A1.1', 'ตารางที่ขอสิทธิ์ทุกตารางมีวัตถุประสงค์ที่จำเป็นจริง', 'มนุษย์ (ผู้ตรวจ PDPA)', 'รายการตารางในใบสมัคร + ตาราง declared ↔ observed จากผลตรวจ AI', 'ตกข้อนี้ = ไม่ผ่านทั้งชิ้น · ตัดสิทธิ์ขึ้นกลุ่ม 1–2'],
+    ['A1.2', 'ระดับสิทธิ์ที่ขอ (READ/READWRITE) ไม่เกินที่โค้ดใช้จริง', 'มนุษย์ + ผล AI เป็นบันทึกข้างฟอร์ม', 'ผลสแกนโค้ดรายตาราง พร้อมเลขบรรทัด', 'ตกข้อนี้ = ไม่ผ่านทั้งชิ้น'],
+    ['A1.3', 'มีฐานทางกฎหมายรองรับการประมวลผลข้อมูลสุขภาพ', 'มนุษย์', 'เอกสารฐานทางกฎหมาย + ผู้รับผิดชอบข้อมูลส่วนบุคคล', 'ตกข้อนี้ = ไม่ผ่าน และอุทธรณ์ไม่ได้'],
+    ['A1.4', 'ข้อความสิทธิ์ข้อมูลฉบับเผยแพร่ถูกต้องและ รพ. อ่านเข้าใจ', 'มนุษย์ (ผู้ตรวจ PDPA อนุมัติข้อความเอง)', 'ร่างข้อความ + พรีวิว modal “ขอเปิดใช้” ของหน้าร้าน', 'ตกข้อนี้ = ไม่ผ่าน · ผู้พัฒนาเขียนข้อความเองไม่ได้'],
+    ['A1.5', 'การส่งข้อมูลออกนอกเครือข่ายโรงพยาบาลมีการควบคุมครบ (T3)', 'มนุษย์ + endpointsCalled จากผล AI', 'รายการปลายทางภายนอกทั้งหมด + วิธีเข้ารหัส', 'ตกข้อนี้ = ยับยั้งทันที (สายมีสิทธิ์ veto)'],
+    ['A1.6', 'มีการเก็บ log การเข้าถึงข้อมูลผู้ป่วยและลบไม่ได้', 'มนุษย์', 'ตัวอย่าง log 200 บรรทัด (ปิดบัง HN)', 'ตกข้อนี้ = ไม่ผ่าน'],
+    ['A1.7', 'มีข้อตกลงประมวลผลข้อมูล (DPA) กับคู่สัญญาแล้ว (เฉพาะ T3)', 'มนุษย์', 'สำเนา DPA ที่ลงนามแล้ว', 'ตกข้อนี้ = ไม่ผ่านสำหรับ T3'],
+    ['A1.8', 'ระยะเวลาเก็บข้อมูลและวิธีลบระบุชัดและทำได้จริง', 'มนุษย์', 'นโยบายเก็บ/ลบข้อมูล + จุดที่ทำในระบบ', 'ตกข้อนี้ = ไม่ผ่าน']
+  ] },
+  A2: { title: 'ความเสี่ยงทางคลินิก', veto: true, owner: 'Developer Portal', items: [
+    ['A2.1', 'ขอบเขตการใช้งานทางคลินิกระบุชัดและไม่เกินความสามารถจริง', 'มนุษย์ (ผู้ตรวจคลินิก)', 'คำอธิบายขอบเขต + ผลทดสอบภาคสนาม', 'ตกข้อนี้ = ไม่ผ่านทั้งชิ้น'],
+    ['A2.2', 'ไม่มีการตัดสินใจแทนแพทย์โดยไม่มีขั้นตอนตรวจทาน', 'มนุษย์', 'ผังเส้นทางข้อมูลจนถึงจุดที่คนกดยืนยัน', 'ตกข้อนี้ = ยับยั้งทันที'],
+    ['A2.3', 'การแจ้งเตือนไม่ทำให้เกิดความล่าช้าต่อการดูแลผู้ป่วย', 'มนุษย์', 'บันทึกจากหน้างานในการทดสอบภาคสนาม', 'ตกข้อนี้ = ไม่ผ่าน'],
+    ['A2.4', 'ข้อจำกัดและกรณีที่ห้ามใช้ระบุไว้ให้ผู้ใช้เห็น', 'มนุษย์ (ผล AI ถูกซ่อน เพราะตรงกับมนุษย์ 68%)', 'ข้อความข้อจำกัดที่จะขึ้นหน้าร้าน', 'ตกข้อนี้ = ไม่ผ่าน'],
+    ['A2.5', 'มีแนวทางจัดการเมื่อผลจาก Add-on ขัดกับดุลพินิจแพทย์', 'มนุษย์', 'เอกสารแนวทาง + จุดที่แสดงในระบบ', 'ตกข้อนี้ = ไม่ผ่าน'],
+    ['A2.6', 'ข้อความที่ AI สร้างไม่ถูกบันทึกลงเวชระเบียนโดยไม่มีคนตรวจทาน', 'มนุษย์', 'ผังคิวตรวจทาน + ตัวอย่างหน้าจอยืนยัน', 'ตกข้อนี้ = ยับยั้งทันที']
+  ] },
+  A3: { title: 'เทคนิคและความปลอดภัยระบบ', veto: true, owner: 'Developer Portal', items: [
+    ['A3.1', 'การเชื่อมต่อทั้งหมดเข้ารหัส TLS 1.2 ขึ้นไป', 'ตรวจอัตโนมัติ (E2)', 'ผล handshake ทุก endpoint', 'ตีกลับอัตโนมัติก่อนเข้าคิวมนุษย์'],
+    ['A3.2', 'การจัดการ session และ token เป็นไปตามมาตรฐาน (เรียก API ผ่าน BMS Session ID)', 'ตรวจอัตโนมัติ (E2) + ผล AI', 'ผลสแกนโค้ด + อายุ token', 'ตีกลับอัตโนมัติ'],
+    ['A3.3', 'สิทธิ์ที่ Add-on ใช้ตอนรันไม่เกินสิทธิ์ที่ประกาศ', 'ตรวจอัตโนมัติ (E2/E9)', 'ผลเทียบสิทธิ์ประกาศกับที่ใช้จริง', 'ตกข้อนี้ = เข้ากลุ่มตรวจซ้ำ R-D'],
+    ['A3.4', 'ขนาดและชนิดไฟล์ที่รับถูกจำกัดและตรวจสอบ', 'ตรวจอัตโนมัติ (E2)', 'ผลทดสอบอัปโหลดไฟล์เกินขนาด', 'ตีกลับอัตโนมัติ'],
+    ['A3.5', 'มีการทดสอบถอยกลับเวอร์ชัน (rollback) ได้จริง', 'มนุษย์ (ผู้ตรวจเทคนิค)', 'ขั้นตอนและผลการทดสอบ rollback', 'ตกข้อนี้ = ไม่ผ่าน'],
+    ['A3.6', 'ไม่มี secret หรือรหัสผ่านฝังในโค้ดและไฟล์ตั้งค่า', 'ตรวจอัตโนมัติ (E2) + ผล AI', 'ผลสแกน secret พร้อมเลขบรรทัด (รวมไฟล์ตัวอย่างที่แจกไปกับแพ็กเกจ)', 'ตกข้อนี้ = ไม่ผ่านทั้งชิ้น'],
+    ['A3.7', 'ไม่มี endpoint ภายนอกที่ไม่ได้แจ้งในใบสมัคร', 'ตรวจอัตโนมัติ (E2/E9)', 'รายการ endpointsCalled เทียบกับที่แจ้ง', 'ตกข้อนี้ = ยับยั้ง + เข้าเงื่อนไขระงับฉุกเฉินถ้าแตะข้อมูลผู้ป่วย'],
+    ['A3.8', 'มี health endpoint ที่เรียกได้จากภายนอกและตอบภายใน 2 วินาที', 'ตรวจอัตโนมัติ (E2)', 'ผลเรียก GET /health + เวลาตอบ', 'ตีกลับอัตโนมัติ · ไม่มี endpoint = health UNKNOWN ตลอด'],
+    ['A3.9', 'รองรับฐานข้อมูลทุกประเภทที่ HOSxP รองรับ และไม่ผูกกับชนิดเดียว', 'ตรวจอัตโนมัติ (E2) + ผู้ตรวจเทคนิคยืนยัน', 'ผลทดสอบติดตั้งและรันจริงบน MySQL 5.7/8.x · MariaDB 10.x · PostgreSQL 13+ · Firebird 2.5/3.0 · MS SQL Server 2016+ พร้อม log การเชื่อมต่อของแต่ละชนิด', 'ตกข้อนี้ = ไม่ผ่าน · ถ้ารองรับไม่ครบต้องประกาศชนิดที่รองรับบนหน้าร้านและถูกจำกัดกลุ่มคุณภาพ'],
+    ['A3.10', 'คำสั่ง SQL ใช้ไวยากรณ์ที่พอร์ตได้ ไม่ใช้ฟีเจอร์เฉพาะผู้ผลิตโดยไม่มีทางเลือกสำรอง', 'ตรวจอัตโนมัติ (E2)', 'ผลสแกนคำสั่งเฉพาะผู้ผลิต (stored procedure/ฟังก์ชันเฉพาะ) + ทางเลือกสำรองที่มี', 'ตกข้อนี้ = ตีกลับให้แก้']
+  ] },
+  A4: { title: 'คุณภาพรายการและคำอธิบาย', veto: false, owner: 'Developer Portal', items: [
+    ['A4.1', 'ชื่อและคำอธิบายสั้นตรงกับสิ่งที่ Add-on ทำจริง', 'ตรวจอัตโนมัติ (E2) + ผล AI', 'คลังคำห้าม 42 คำ + ผลเทียบคำอธิบายกับความสามารถ', 'ตีกลับให้แก้'],
+    ['A4.2', 'คำอธิบายเป็นไปตามคู่มือโทนและคำศัพท์ของกอง', 'มนุษย์ (บก.เนื้อหา)', 'คู่มือโทนในคลังความรู้', 'ตีกลับให้แก้'],
+    ['A4.3', 'มีภาพหน้าจอ ≥3 ภาพ และภาพปก 16:9', 'ตรวจอัตโนมัติ (E2)', 'ไฟล์ภาพ + ขนาดที่ตรวจได้', 'ตีกลับอัตโนมัติ'],
+    ['A4.4', 'ไอคอนสี่เหลี่ยมจัตุรัส ≥256px พื้นโปร่งใส', 'ตรวจอัตโนมัติ (E2)', 'ไฟล์ไอคอน + ผลตรวจ alpha channel', 'ตีกลับอัตโนมัติ (มติข้อ 9)'],
+    ['A4.5', 'ภาพหน้าจอปิดบังข้อมูลผู้ป่วยครบทุกภาพ', 'ตรวจอัตโนมัติ + มนุษย์ยืนยัน', 'ภาพต้นฉบับที่ปิดบังแล้ว', 'ตกข้อนี้ = ไม่ผ่าน และการเปิดดูถูกบันทึกในมุมมอง PDPA'],
+    ['A4.6', 'จุดฝังตัวที่ประกาศตรงกับที่ใช้จริง และมีอยู่ในทะเบียนโมดูล HOSxP', 'ตรวจอัตโนมัติ (E2) เทียบทะเบียนแกน G', 'รายการโมดูลที่ประกาศ + ที่พบในโค้ด', 'ตกข้อนี้ = ตีกลับ และทบทวนระดับ T ใหม่']
+  ] }
+};
+const BCRIT = {
+  B1: ['ผลกระทบต่อการใช้งานจริง', '30', 'ระบบคำนวณ', ['จำนวนโรงพยาบาลที่ยังใช้อยู่ใน 30 วัน (D1 /usage/daily)', 'อัตราคงอยู่เดือนที่ 3', 'ความถี่การใช้ต่อวันต่อแห่ง'], 'แก้ด้วยมือไม่ได้ทุกกรณี'],
+  B2: ['คุณค่าทางคลินิก', '20', 'ผู้ตรวจคลินิก (มัธยฐาน)', ['17–20 = ลดความเสี่ยงผู้ป่วยได้ชัดเจนและมีหลักฐาน', '13–16 = ช่วยงานคลินิกแต่ยังไม่มีหลักฐานผลลัพธ์', '<13 = ยังไม่เห็นผลทางคลินิก'], 'ต่างกันเกิน 30% ของคะแนนเต็ม = เข้าที่ประชุมกองอัตโนมัติ'],
+  B3: ['ธรรมาภิบาลข้อมูล', '20', 'ผู้ตรวจ PDPA', ['18–20 = ขอสิทธิ์เท่าที่จำเป็นและเอกสารครบ', '14–17 = ขอเกินบางส่วนแต่แก้ได้', '<14 = T3 ขึ้นกลุ่ม 1–2 ไม่ได้'], 'กติกาเหนือคะแนนบังคับทับผลรวม'],
+  B4: ['ประสบการณ์ผู้ใช้', '10', 'ผู้ตรวจคลินิก (ควบหลังตัดตำแหน่งผู้ตรวจ UX)', ['9–10 = ผ่านการทดสอบผู้ใช้จริงและแก้ตามผล', '6–8 = ใช้ได้แต่ยังมีจุดสะดุด', '<6 = ต้องออกแบบใหม่'], 'ค่าที่ AI เสนอเป็นเพียงข้อเสนอ ต้องกดรับหรือแก้'],
+  B5: ['การดูแลหลังเผยแพร่ (SLA)', '10', 'ระบบคำนวณ', ['ตอบรับทันเวลา (เกณฑ์ ≥95%)', 'คืนสภาพทันเวลา (≥90%)', 'อัตราเปิดเรื่องซ้ำ (≤5%)'], 'ไหลจากระบบ issue อัตโนมัติ · ผิดซ้ำเข้าบันไดมาตรการ'],
+  B6: ['ความพร้อมทางเทคนิค', '10', 'ผู้ตรวจเทคนิค', ['9–10 = เอกสารครบ ถอยกลับได้ มี health endpoint และรองรับฐานข้อมูลครบทุกชนิด', '6–8 = ครบบางส่วน', '<6 = ยังไม่พร้อมให้ รพ. ติดตั้ง'], 'ผลสแกนความปลอดภัยประกอบการให้คะแนน']
+};
+
 const SLOTS = [
   ['h1', 'S2 Hero', 'สไลด์ 1'], ['h2', 'S2 Hero', 'สไลด์ 2'], ['h3', 'S2 Hero', 'สไลด์ 3'], ['h4', 'S2 Hero', 'สไลด์ 4'],
   ['f1', 'S4 แนะนำสำหรับคุณ', 'ใบใหญ่'], ['f2', 'S4 แนะนำสำหรับคุณ', 'ใบเล็ก 1'], ['f3', 'S4 แนะนำสำหรับคุณ', 'ใบเล็ก 2'], ['f4', 'S4 แนะนำสำหรับคุณ', 'ใบเล็ก 3'],
@@ -1164,8 +1269,9 @@ class Component extends DCLogic {
     return () => {
       const d = this.state.dialog;
       if (!d) return;
+      if (d.deny || d.info) { this.setState({ dialog: null }); return; }
       const log = (this.state.done || []).slice(0, 4);
-      log.unshift({ title: d.title, when: 'เมื่อสักครู่' });
+      log.unshift({ title: d.title, when: 'เมื่อสักครู่', kind: d.kind || 'action' });
       const next = { dialog: null, done: log };
       if (d.thenPage) next.page = d.thenPage;
       this.setState(next);
@@ -1193,8 +1299,8 @@ class Component extends DCLogic {
   }
   match(q, parts) { if (!q) return true; const s = parts.filter(x => x).join(' ').toLowerCase(); return s.indexOf(q.trim().toLowerCase()) >= 0; }
   previewBlock(sub, role) {
-    const LIVE = 'https://thabms-hub.github.io/marketplace-editorial-board/bms-marketplace-preview/BMS%20Marketplace.dc.html';
-    const DRAFT = 'bms-marketplace-preview/BMS Marketplace.dc.html';
+    const LIVE = 'https://claude.ai/code/artifact/d43c2b6d-7d18-4bc4-babc-eee207656708';
+    const DRAFT = this.props.draftSrc || 'storefront-standalone.html';
     const stage = this.state.stage || 'staging';
     const ctx = this.state.previewCtx || 'new';
     const map = this.slotMap(), why = this.whyMap();
@@ -1224,18 +1330,19 @@ class Component extends DCLogic {
     const zpage = { home: 'home', browse: 'browse', detail: 'detail' }[sub] || 'home';
     const src = stage === 'staging'
       ? DRAFT + '#draft=1&ctx=' + ctx + '&page=' + zpage + (zpage === 'detail' ? '&sel=scribe' : '') + (zpage === 'browse' ? '&filter=' + encodeURIComponent('ลดการคีย์ข้อมูลซ้ำ') : '')
-      : LIVE + '#page=' + zpage + (zpage === 'detail' ? '&sel=scribe' : '');
+      : LIVE;
     return [
       { isPreview: true, url: src, zone: zone[0], zoneNote: zone[1],
         stage: stage, stageLabel: stage === 'staging' ? 'กำลังดู: ฉบับร่างในคอนโซล (staging)' : 'กำลังดู: หน้าจริงที่ รพ. เห็นตอนนี้ (production)',
         stageBg: stage === 'staging' ? '#fff5e2' : '#e6f6ee', stageFg: stage === 'staging' ? '#8a5a06' : '#0f7c55',
+        openLabel: stage === 'production' ? 'เปิดหน้าจริงในแท็บใหม่ ↗' : 'เปิดฉบับร่างเต็มหน้าจอในแท็บใหม่ ↗',
         tabs: [['staging', 'ฉบับร่างในคอนโซล'], ['production', 'หน้าจริงตอนนี้']].map(t => ({ label: t[1],
           go: () => this.setState({ stage: t[0] }),
           bg: stage === t[0] ? '#12315b' : '#ffffff', fg: stage === t[0] ? '#ffffff' : '#41576b', line: stage === t[0] ? '#12315b' : '#d9e4ee' })),
         ctxs: [['new', 'โรงพยาบาลที่ยังไม่เปิดใช้ Add-on ใด'], ['some', 'โรงพยาบาลที่เปิดใช้แล้ว 3 ตัว'], ['anon', 'ผู้เข้าชมทั่วไป (ยังไม่ล็อกอิน)']].map(c => ({ label: c[1],
           go: () => this.setState({ previewCtx: c[0] }),
           bg: ctx === c[0] ? '#e8f2fd' : '#ffffff', fg: ctx === c[0] ? '#125fa8' : '#5b6f82', line: ctx === c[0] ? '#1677d2' : '#dbe6f0' })),
-        note: 'พรีวิวคือของจริงที่ยังไม่เผยแพร่ ไม่ใช่ภาพจำลอง — โซนที่คอนโซลจัดอยู่ (Hero · แนะนำสำหรับคุณ · ชุดคัดสรร · ผู้ชนะรางวัล) จะแสดงตามผังฉบับร่างทันที'
+        note: stage === 'staging' ? 'พรีวิวคือของจริงที่ยังไม่เผยแพร่ ไม่ใช่ภาพจำลอง — โซนที่คอนโซลจัดอยู่ (Hero · แนะนำสำหรับคุณ · ชุดคัดสรร · ผู้ชนะรางวัล) แสดงตามผังฉบับร่างทันที และเลือกโซนหรือมุมมองผู้ใช้ได้จากปุ่มด้านบน' : 'หน้าจริงที่เผยแพร่อยู่ · บางเบราว์เซอร์ปิดกั้นการฝังหน้าภายนอก ถ้ากรอบด้านล่างว่าง ให้กดลิงก์เปิดในแท็บใหม่'
       },
       { isBar: true, title: 'ขั้นที่ 2 · ส่งขึ้นหน้าจริง',
         note: ready ? 'ตรวจครบแล้ว — ส่งขึ้น production ได้' : 'ยังส่งไม่ได้ ' + blockers.length + ' เรื่อง (ดูรายการด้านล่าง)',
@@ -1253,7 +1360,7 @@ class Component extends DCLogic {
                 sub: 'ระบบบล็อกที่จุดนี้ พร้อมบอกว่าติดอะไร — ไม่ปล่อยให้ส่งแล้วไปแก้ทีหลังบนหน้าจริง',
                 effects: blockers
               }) },
-          { label: 'เปิดหน้าจริงในแท็บใหม่', bg: '#ffffff', fg: '#41576b', line: '#d9e4ee', go: this.dlg({ title: 'เปิดหน้าร้านจริงในแท็บใหม่', sub: LIVE, confirm: 'รับทราบ', needReason: false, effects: ['หน้าจริงเปิดแยกแท็บเพื่อไม่ให้สับสนกับฉบับร่าง', 'ถ้าเพิ่งกดส่งขึ้น production ให้รอ 1–2 นาทีเพื่อให้แคชหน้าร้านหมดอายุ'] }) }
+          { label: 'เปิดหน้าจริงในแท็บใหม่ ↗', bg: '#ffffff', fg: '#125fa8', line: '#bcd8f3', href: LIVE }
         ] },
       { isTbl: true, title: 'รายการตรวจก่อนส่งขึ้นจริง', note: 'ระบบตรวจเองจากสถานะในคอนโซล', foot: 'กติกา: การส่งขึ้นจริงต้องผ่านหน้าพรีวิวเสมอ · ปุ่มส่งจะไม่ปรากฏในหน้าการจัดวางหรือหน้าชุดคัดสรร',
         minw: '620px', head: React.createElement('tr', { style: { background: '#f5f9fd' } }, ['รายการ', 'สถานะ'].map((c, i) => React.createElement('th', { key: i, style: { textAlign: 'left', padding: '8px 12px', fontSize: '11.5px', fontWeight: 600, color: '#5b6f82', borderBottom: '1px solid #e3edf5' } }, c))),
@@ -1353,7 +1460,7 @@ class Component extends DCLogic {
       { isBar: true, title: 'เผยแพร่ผังรอบ 19 ก.ย. – 2 ต.ค.',
         note: (empty ? 'ยังมีช่องว่าง ' + empty + ' ช่อง · ' : '') + (missWhy ? 'ยังไม่กรอก “เลือกเพราะ” ' + missWhy + ' ช่อง — เผยแพร่ไม่ได้' : 'กรอก “เลือกเพราะ” ครบทุกช่องแล้ว'),
         items: [
-          { label: 'พรีวิวหน้าแรกอย่างที่ รพ. เห็น', bg: '#ffffff', fg: '#125fa8', line: '#bcd8f3', go: this.dlg({ title: 'พรีวิวหน้าแรกด้วยผังรอบนี้', sub: 'เห็นทุกโซนเรียงอย่างที่โรงพยาบาลเห็นจริง พร้อมข้อความ “เลือกเพราะ” ใต้การ์ด', confirm: 'ปิดพรีวิว', needReason: false, effects: ['S2 Hero ' + zones[0].cells.filter(c => c.filled).length + ' / 4 สไลด์', 'S4 แนะนำสำหรับคุณ ' + zones[1].cells.filter(c => c.filled).length + ' / 4 ช่อง', 'S10.5 ชั้น Vendor ' + zones[2].cells.filter(c => c.filled).length + ' / 3 ช่อง'] }) },
+          { label: 'พรีวิวหน้าแรกอย่างที่ รพ. เห็น', bg: '#ffffff', fg: '#125fa8', line: '#bcd8f3', go: this.dlg({ title: 'พรีวิวหน้าแรกด้วยผังรอบนี้', sub: 'เห็นทุกโซนเรียงอย่างที่โรงพยาบาลเห็นจริง พร้อมข้อความ “เลือกเพราะ” ใต้การ์ด', confirm: 'ปิดพรีวิว', needReason: false, info: true, effects: ['S2 Hero ' + zones[0].cells.filter(c => c.filled).length + ' / 4 สไลด์', 'S4 แนะนำสำหรับคุณ ' + zones[1].cells.filter(c => c.filled).length + ' / 4 ช่อง', 'S10.5 ชั้น Vendor ' + zones[2].cells.filter(c => c.filled).length + ' / 3 ช่อง'] }) },
           missWhy || overQuota
             ? { label: overQuota ? '⛔ เผยแพร่ไม่ได้ — เกินเพดานโควตา' : '⛔ เผยแพร่ไม่ได้ — ยังไม่กรอกเหตุผลครบ', bg: '#fdecea', fg: '#a52a21', line: '#f3c9c4', go: this.dlg({ title: 'ยังเผยแพร่ผังนี้ไม่ได้', sub: overQuota ? 'สัดส่วน BMS ' + q.bmsPct + '% เกินเพดาน 40% ที่กำลังบังคับใช้' : 'มี ' + missWhy + ' ช่องที่ยังไม่กรอก “เลือกเพราะ” ซึ่งเป็นข้อความที่ขึ้นหน้าร้านจริง', tone: 'bad', confirm: 'รับทราบ', needReason: false, effects: overQuota ? ['ลดช่องของ BMS ลง หรือเพิ่มช่องของผู้พัฒนาภายนอก', 'บรรณาธิการสูงสุดข้ามเพดานได้ แต่ต้องกรอกเหตุผลและขึ้นรายงานความโปร่งใสข้อ 4'] : ['กรอก “เลือกเพราะ” ให้ครบทุกช่องที่มีผลิตภัณฑ์', 'ข้อความนี้แสดงใต้การ์ดบนหน้าแรกจริง'] }) }
             : { label: 'เผยแพร่ผังรอบนี้', bg: '#0f7c55', fg: '#ffffff', line: '#0f7c55', go: this.gate(['R2','R1','R0'], this.dlg({ title: 'เผยแพร่ผังจัดวางรอบ 19 ก.ย. – 2 ต.ค.', sub: 'ผังมีผลกับหน้าแรกทันทีเมื่อถึงวันเริ่มรอบ', tone: 'ok', confirm: 'เผยแพร่ผัง', effects: [q.filled + ' ช่องมีผลิตภัณฑ์ · ' + empty + ' ช่องว่าง', 'บันทึกสัดส่วนโควตาของรอบนี้เข้ารายงานความโปร่งใสข้อ 4', 'เริ่มนับตัวชี้วัด “เปิดใช้จริงภายใน 30 วัน” ของรอบนี้'], msg: '' }), 'การเผยแพร่ผังจัดวาง') },
@@ -2092,22 +2199,48 @@ class Component extends DCLogic {
       ];
       return [
         this.note('แยกเจ้าของเกณฑ์ตามข้อยุติ 9.1', 'เกณฑ์ชั้น A (A1–A4) เจ้าของคือ Developer Portal — คอนโซลดึงมาแสดงและใช้เรนเดอร์ฟอร์ม แก้ในคอนโซลไม่ได้ · เกณฑ์ชั้น B (B1–B6) เจ้าของคือกองบรรณาธิการ แก้ได้ที่นี่ · เส้นแบ่งกลุ่ม 1–5 เป็นของกอง', 'info', '🔀'),
-        this.tbl('เกณฑ์ชั้น A · ดึงจาก portal (อ่านอย่างเดียว)', 'ฟอร์ม A1–A4 ในห้องตรวจสร้างจากนิยามที่ดึงมา — portal เพิ่มข้อ A3.9 เมื่อไร ฟอร์มต้องมีข้อนั้นโดยไม่ต้องแก้โค้ดคอนโซล',
-          ['สาย', 'จำนวนข้อ', 'เวอร์ชันที่คอนโซลรู้จัก', 'เวอร์ชันใหม่ที่ portal ประกาศ', 'สิ่งที่กองทำได้'], [
-            this.row([tx('A1 · ความเป็นส่วนตัวและสิทธิ์ข้อมูล', { w: '600' }), num('8 ข้อ'), tx('2569.2', { ff: 'Inter, sans-serif' }), tx('2569.3 · มีผล 1 ต.ค. 69', { ff: 'Inter, sans-serif', fg: '#8a5a06' }), tx('เพิ่มหมายเหตุภายในของกอง + เสนอแก้เกณฑ์ผ่านคำขอ')]),
-            this.row([tx('A2 · ความเสี่ยงทางคลินิก', { w: '600' }), num('6 ข้อ'), tx('2569.2', { ff: 'Inter, sans-serif' }), tx('ไม่มี', { ff: 'Inter, sans-serif' }), tx('เดียวกัน')]),
-            this.row([tx('A3 · เทคนิคและความปลอดภัย', { w: '600' }), num('8 ข้อ'), tx('2569.2', { ff: 'Inter, sans-serif' }), tx('2569.3 · มีผล 1 ต.ค. 69', { ff: 'Inter, sans-serif', fg: '#8a5a06' }), tx('เดียวกัน')]),
-            this.row([tx('A4 · คุณภาพรายการและคำอธิบาย', { w: '600' }), num('6 ข้อ'), tx('2569.2', { ff: 'Inter, sans-serif' }), tx('ไม่มี', { ff: 'Inter, sans-serif' }), tx('เดียวกัน')])
-          ], 'เมื่อเกณฑ์ A เวอร์ชันใหม่มีผล ระบบดัน Add-on ที่ตรวจด้วยเวอร์ชันเก่าเข้ากลุ่ม R-E อัตโนมัติ — และประกาศเกณฑ์ใหม่โดยไม่มีแผนตรวจซ้ำแบบทยอย ระบบไม่ให้กดเผยแพร่'),
-        this.tbl('เกณฑ์ชั้น B · กองเป็นเจ้าของ (แก้ได้)', 'ต้องมีมติเอกฉันท์ในกอง + ผู้บริหารรับรอง จึงจะประกาศใช้ได้ — แสดงเป็นรายการลายเซ็นที่ยังขาด',
-          ['หมวด', 'น้ำหนัก', 'ที่มาของคะแนน', 'เวอร์ชัน', 'ลายเซ็นที่ยังขาด'], [
-            this.row([tx('B1 · ผลกระทบต่อการใช้งานจริง', { w: '600' }), num('30'), pill('ระบบคำนวณ — แก้มือไม่ได้', 'ok'), tx('2569.3', { ff: 'Inter, sans-serif' }), tx('—')]),
-            this.row([tx('B2 · คุณค่าทางคลินิก', { w: '600' }), num('20'), tx('ผู้ตรวจคลินิกให้คะแนน'), tx('2569.3', { ff: 'Inter, sans-serif' }), tx('—')]),
-            this.row([tx('B3 · ธรรมาภิบาลข้อมูล', { w: '600' }), num('20'), tx('ผู้ตรวจ PDPA ให้คะแนน'), tx('2569.4 (ร่าง)', { ff: 'Inter, sans-serif', fg: '#8a5a06' }), tx('บก.จัดวาง · ผู้บริหารรับรอง', { fg: '#a52a21' })]),
-            this.row([tx('B4 · ประสบการณ์ผู้ใช้', { w: '600' }), num('10'), tx('ผู้ตรวจ UX ให้คะแนน'), tx('2569.3', { ff: 'Inter, sans-serif' }), tx('—')]),
-            this.row([tx('B5 · การดูแลหลังขาย', { w: '600' }), num('10'), pill('ระบบคำนวณจากสถิติ SLA', 'ok'), tx('2569.3', { ff: 'Inter, sans-serif' }), tx('—')]),
-            this.row([tx('B6 · ความพร้อมทางเทคนิค', { w: '600' }), num('10'), tx('ผู้ตรวจเทคนิคให้คะแนน'), tx('2569.3', { ff: 'Inter, sans-serif' }), tx('—')])
-          ], 'เส้นแบ่งกลุ่ม: กลุ่ม 1 ≥85 · กลุ่ม 2 70–84 · กลุ่ม 3 55–69 · กลุ่ม 4 40–54 · กลุ่ม 5 <40 · ชิ้นงานที่ตรวจแล้วยังผูกกับเวอร์ชันที่ใช้ตอนนั้น ไม่ถูกเขียนทับย้อนหลัง')
+        { isAcc: true, title: 'เกณฑ์ชั้น A · กดที่สายเพื่อดูรายละเอียดทุกข้อ', note: 'เจ้าของคือ Developer Portal — คอนโซลดึงมาแสดงและใช้เรนเดอร์ฟอร์ม แก้ในคอนโซลไม่ได้ แต่เสนอแก้ได้จากห้องตรวจ',
+          lanes: Object.keys(CRITERIA).map(code => {
+            const L = CRITERIA[code];
+            const opened = this.state.openLanes || { A3: 1 };
+            const open = !!opened[code];
+            return {
+              code: code, title: L.title, count: L.items.length + ' ข้อ',
+              veto: L.veto ? 'สายนี้มีสิทธิ์ยับยั้ง' : 'สายนี้ไม่มีสิทธิ์ยับยั้ง',
+              vbg: L.veto ? TONE.bad[1] : TONE.na[1], vfg: L.veto ? TONE.bad[0] : TONE.na[0],
+              open: open, sign: open ? '▾' : '▸', hint: open ? 'กดเพื่อย่อ' : 'กดเพื่อขยาย',
+              bg: open ? '#12315b' : '#ffffff', fg: open ? '#ffffff' : '#17324d',
+              go: () => { const o = Object.assign({}, this.state.openLanes || { A3: 1 }); if (o[code]) delete o[code]; else o[code] = 1; this.setState({ openLanes: o }); },
+              items: open ? L.items.map(it => ({
+                code: it[0], chipBg: '#e8f2fd', chipFg: '#12315b', title: it[1], checker: it[2],
+                evLabel: 'หลักฐานที่ต้องมี', evidence: it[3], failLabel: 'ผลถ้าตกข้อนี้', fail: it[4],
+                cbg: it[2].indexOf('อัตโนมัติ') >= 0 ? TONE.ok[1] : TONE.info[1],
+                cfg: it[2].indexOf('อัตโนมัติ') >= 0 ? TONE.ok[0] : TONE.info[0]
+              })) : []
+            };
+          }) },
+
+        { isAcc: true, title: 'เกณฑ์ชั้น B · กดที่หมวดเพื่อดูวิธีให้คะแนน', note: 'กองเป็นเจ้าของ แก้ได้ แต่ต้องมีมติเอกฉันท์ + ผู้บริหารรับรอง · เส้นแบ่งกลุ่ม: 1 ≥85 · 2 = 70–84 · 3 = 55–69 · 4 = 40–54 · 5 <40',
+          lanes: Object.keys(BCRIT).map(code => {
+            const B2 = BCRIT[code];
+            const openedB = this.state.openBs || {};
+            const open = !!openedB[code];
+            return {
+              code: code, title: B2[0], count: 'น้ำหนัก ' + B2[1] + ' คะแนน',
+              veto: B2[2], vbg: B2[2] === 'ระบบคำนวณ' ? TONE.ok[1] : TONE.info[1], vfg: B2[2] === 'ระบบคำนวณ' ? TONE.ok[0] : TONE.info[0],
+              open: open, sign: open ? '▾' : '▸', hint: open ? 'กดเพื่อย่อ' : 'กดเพื่อขยาย',
+              bg: open ? '#12315b' : '#ffffff', fg: open ? '#ffffff' : '#17324d',
+              go: () => { const o = Object.assign({}, this.state.openBs || {}); if (o[code]) delete o[code]; else o[code] = 1; this.setState({ openBs: o }); },
+              items: open ? B2[3].map(t => {
+                const parts = String(t).split('=');
+                const band = parts.length > 1 ? parts[0].trim() : 'ที่มาของคะแนน';
+                const body = parts.length > 1 ? parts.slice(1).join('=').trim() : t;
+                return { code: band, chipBg: '#fdf3e0', chipFg: '#8a6410', title: body, checker: B2[2],
+                  evLabel: 'หมายเหตุกติกาของหมวดนี้', evidence: B2[4], failLabel: '', fail: '',
+                  cbg: TONE.na[1], cfg: TONE.na[0] };
+              }) : []
+            };
+          }) }
       ];
     }
     if (page === 'people') {
@@ -2169,7 +2302,9 @@ class Component extends DCLogic {
           ['— ไม่มีรายการ', 'อำนาจพิเศษยังไม่ถูกใช้เลยในระบบ', 'เหลือกรณีเดียวคือการข้ามเพดานโควตาความเป็นธรรม ซึ่งช่วงพัฒนาปิดใช้อยู่ — สภาพนี้ถูกต้อง', '', 'ok']
         ]
       };
-      const list = rows[sub] || rows.all;
+      const want = sub === 'patient' ? 'patient' : sub === 'power' ? 'power' : 'action';
+      const live = (this.state.done || []).filter(d => (d.kind || 'action') === want).map(d => [d.when || 'เมื่อสักครู่', this.who().name, d.title, 'บันทึกจากการกระทำในคอนโซลรอบการใช้งานนี้ · แก้ไขและลบไม่ได้', 'ok']);
+      const list = live.concat(rows[sub] || rows.all);
       return [
         this.note('บันทึกกิจกรรม แก้ไขและลบไม่ได้ทุกกรณี', 'เก็บทุกอย่างที่เปลี่ยนสถานะหรือมองเห็นข้อมูลอ่อนไหว — ใคร ทำอะไร กับอะไร เมื่อไร จากที่ไหน เหตุผลอะไร · ส่งออกเป็นไฟล์สำหรับการตรวจสอบภายในได้ · ผู้ตรวจสอบภายใน (R11) อ่านได้ทั้งหมด แก้ไม่ได้', 'muted', '🔒'),
         this.finder('audit', 'ค้นชื่อผู้กระทำ · ชนิดเหตุการณ์ · เลขที่ส่งตรวจ', 'ค้นเฉพาะในบันทึกกิจกรรมของมุมมองนี้', list.filter(r => this.match(this.q('audit'), r)).length + ' / ' + list.length + ' เหตุการณ์'),
@@ -2255,6 +2390,8 @@ class Component extends DCLogic {
       ],
       A3: [
         ['A3.1', 'การเชื่อมต่อทั้งหมดเข้ารหัส TLS 1.2 ขึ้นไป', 'เติมล่วงหน้าจากผล AI (confidence 0.98) — กดยืนยันหรือแก้'],
+        ['A3.9', 'รองรับฐานข้อมูลทุกประเภทที่ HOSxP รองรับ (MySQL · MariaDB · PostgreSQL · Firebird · MS SQL)', 'ผล E2: ทดสอบผ่าน 4 ชนิด · Firebird 2.5 ยังไม่มีผลทดสอบ — ต้องยืนยันด้วยตัวเอง'],
+        ['A3.10', 'คำสั่ง SQL พอร์ตได้ ไม่ผูกฟีเจอร์เฉพาะผู้ผลิต', 'พบ stored procedure เฉพาะ MySQL 2 จุด และมีทางเลือกสำรองแล้ว'],
         ['A3.2', 'การจัดการ session และ token เป็นไปตามมาตรฐาน', 'เติมล่วงหน้า (confidence 0.94)'],
         ['A3.6', 'ไม่มี secret หรือรหัสผ่านฝังในโค้ด', 'ผล AI: ไม่ผ่าน — พบ token ใน config ตัวอย่าง'],
         ['A3.8', 'มี health endpoint ที่เรียกได้จากภายนอก', 'เติมล่วงหน้า (confidence 0.99)']
@@ -2266,7 +2403,13 @@ class Component extends DCLogic {
         ['A4.6', 'จุดฝังตัวที่ประกาศตรงกับที่ใช้จริง', 'ตรวจกับทะเบียนโมดูล HOSxP (แกน G)']
       ]
     };
-    const items = (AFORM[laneCode] || AFORM.A1).filter(it => s.tier === 'T3' || (it[0] !== 'A1.7' && it[0] !== 'A1.5')).map(it => {
+    const HINTS = {};
+    Object.keys(AFORM).forEach(k => AFORM[k].forEach(it => { HINTS[it[0]] = it[2]; }));
+    const laneDef = (CRITERIA[laneCode] || CRITERIA.A1).items;
+    const items = laneDef
+      .filter(it => s.tier === 'T3' || (it[0] !== 'A1.7' && it[0] !== 'A1.5'))
+      .map(it => [it[0], it[1], HINTS[it[0]] || ('ตรวจโดย: ' + it[2] + ' · หลักฐานที่ต้องมี: ' + it[3])])
+      .map(it => {
       const pre = (laneCode === 'A3' || laneCode === 'A4') && it[2].indexOf('เติมล่วงหน้า') === 0;
       const code = s.id + it[0];
       const cur = V[code] || (pre ? 'pass' : '');
@@ -2416,7 +2559,7 @@ class Component extends DCLogic {
       actBoard: this.gate(['R0','R1','R15','R3','R4','R5','R6','R8'], this.dlg({ title: 'ส่งเข้าที่ประชุมกอง · ' + s.id, sub: 'ใช้เมื่อคะแนนต่างเกิน 30% ของคะแนนเต็มหมวด หรือเรื่องคาบเส้น', tone: 'hold', confirm: 'ตั้งเป็นวาระ', effects: ['ล็อกการสรุปผลจนกว่าจะมีมติ', 'สร้างวาระในประชุมกองครั้งถัดไป (12 ก.ย. 69)', 'ผู้ประสานงานผู้พัฒนาได้รับแจ้งเพื่อบันทึกมติ'], msg: 'ผลการตรวจ ' + s.id + ': อยู่ระหว่างเสนอที่ประชุมกองบรรณาธิการ · จะแจ้งผลภายใน 5 วันทำการหลังมีมติ' }), 'ส่งเข้าที่ประชุมกอง'),
       actTier: this.gate(['R4'], this.dlg({ title: 'ปรับระดับความเสี่ยง · ' + s.id, sub: 'ระดับที่ระบบจัดให้คือ ' + s.tier + ' — การปรับด้วยมือบังคับกรอกเหตุผลและบันทึกเป็นเหตุการณ์', tone: 'warn', confirm: 'บันทึกระดับใหม่', effects: ['ระดับใหม่มีผลกับความลึกการตรวจและจำนวนลายเซ็นทันที', 'ค่าที่ระบบตรวจพบยังแสดงเคียงกัน ไม่ถูกลบ', 'เปิดให้ผู้ตรวจ PDPA เท่านั้น'], msg: 'ระดับความเสี่ยงของ ' + s.id + ' ถูกปรับพร้อมเหตุผลที่ระบุ · ความลึกการตรวจเปลี่ยนตามระดับใหม่' }), 'ปรับระดับความเสี่ยง'),
       actUnveto: this.gate(['R4','R5','R6'], this.dlg({ title: 'ยกเลิกการยับยั้ง · ' + s.id, sub: 'ยกเลิกได้เฉพาะผู้ที่ยับยั้ง หรือผู้สืบตำแหน่งในสายเดียวกัน', tone: 'ok', confirm: 'ยกเลิกการยับยั้ง', effects: ['ปุ่มอนุมัติกลับมาปรากฏในแท็บสรุปผล', 'ต้องระบุว่าผู้พัฒนาแก้อะไรจนพอใจแล้ว', 'บันทึกเป็นเหตุการณ์คู่กับการยับยั้งเดิม'], msg: 'การยับยั้งชิ้นงาน ' + s.id + ' ถูกยกเลิกแล้ว การตรวจเดินต่อตามปกติ' }), 'ยกเลิกการยับยั้ง'),
-      actEvidence: this.gate(['R0','R1','R15','R3','R4','R5','R6'], this.dlg({ title: 'เปิดดูหลักฐานที่มีข้อมูลผู้ป่วย', sub: 'การเปิดดูถูกบันทึกในมุมมอง “การเข้าถึงข้อมูลผู้ป่วย” ของบันทึกกิจกรรม — กองเองก็อยู่ใต้ PDPA', tone: 'warn', confirm: 'เปิดดูและยอมรับการบันทึก', effects: ['บันทึกว่าใคร เปิดอะไร เมื่อไร จากที่ไหน', 'เปิดดูในที่ ดาวน์โหลดไม่ได้', 'ภาพที่ปิดบังไม่ครบจะขึ้นคำเตือนก่อนแสดง'], msg: '' }), 'เปิดดูหลักฐานที่มีข้อมูลผู้ป่วย'),
+      actEvidence: this.gate(['R0','R1','R15','R3','R4','R5','R6'], this.dlg({ kind: 'patient', title: 'เปิดดูหลักฐานที่มีข้อมูลผู้ป่วย', sub: 'การเปิดดูถูกบันทึกในมุมมอง “การเข้าถึงข้อมูลผู้ป่วย” ของบันทึกกิจกรรม — กองเองก็อยู่ใต้ PDPA', tone: 'warn', confirm: 'เปิดดูและยอมรับการบันทึก', effects: ['บันทึกว่าใคร เปิดอะไร เมื่อไร จากที่ไหน', 'เปิดดูในที่ ดาวน์โหลดไม่ได้', 'ภาพที่ปิดบังไม่ครบจะขึ้นคำเตือนก่อนแสดง'], msg: '' }), 'เปิดดูหลักฐานที่มีข้อมูลผู้ป่วย'),
       history: [
         ['9 ก.ย. 69 08:12', 'รับผลตรวจ AI ต้นทาง AIR-7741', 'ลายเซ็นผ่าน · schema ตรง · ruleset A/2569.2 ตรงกับที่ประกาศใช้', 'info'],
         ['9 ก.ย. 69 08:17', 'E1 จัดระดับอัตโนมัติ → T3', 'ปัจจัยที่ดันระดับ: สิทธิ์ DB · ประเภทข้อมูล · จุดฝังตัว', 'warn'],
@@ -2473,12 +2616,13 @@ class Component extends DCLogic {
       },
       env: env, alerts: alerts,
       goSla: this.go('issues', 'sla'),
-      goEnv: this.dlg({ title: 'สภาพแวดล้อมที่กำลังใช้: ' + env.label, sub: 'staging ใช้ข้อมูลจริงแบบอ่านได้ แต่คำสั่งเผยแพร่จะไม่ถูกส่งไปหน้าร้าน — สลับได้จากแผง Tweaks ของหน้านี้', confirm: 'รับทราบ', needReason: false, tone: 'warn', effects: ['staging: ปุ่มเผยแพร่ทำงานได้แต่ไม่ยิงคำสั่งจริง', 'production: ทุกการกดมีผลกับหน้าร้านทันที และบันทึกกิจกรรมลบไม่ได้'] }),
+      goEnv: this.dlg({ title: 'สภาพแวดล้อมที่กำลังใช้: ' + env.label, sub: 'staging ใช้ข้อมูลจริงแบบอ่านได้ แต่คำสั่งเผยแพร่จะไม่ถูกส่งไปหน้าร้าน — สลับได้จากแผง Tweaks ของหน้านี้', confirm: 'รับทราบ', needReason: false, info: true, tone: 'warn', effects: ['staging: ปุ่มเผยแพร่ทำงานได้แต่ไม่ยิงคำสั่งจริง', 'production: ทุกการกดมีผลกับหน้าร้านทันที และบันทึกกิจกรรมลบไม่ได้'] }),
       dlg: (d => ({
         open: !!d,
         title: d ? d.title : '', sub: d ? d.sub : '', msg: d ? d.msg : '',
         needReason: d ? d.needReason : false,
-        effectsTitle: (d && d.deny) ? 'ทำไมจึงกดไม่ได้' : 'สิ่งที่จะเกิดขึ้นเมื่อกดยืนยัน',
+        effectsTitle: (d && d.deny) ? 'ทำไมจึงกดไม่ได้' : (d && d.info) ? 'รายละเอียด' : 'สิ่งที่จะเกิดขึ้นเมื่อกดยืนยัน',
+        showCancel: !(d && (d.deny || d.info)),
         confirmLabel: d ? d.confirm : '',
         effects: d ? (d.effects || []).map(t => ({ t: t })) : [],
         fg: d ? TONE[d.tone || 'info'][0] : '#125fa8',
@@ -2502,7 +2646,7 @@ class Component extends DCLogic {
         subnav: snDef.map(s => ({ label: s[1], go: this.goSub(page, s[0]), fg: s[0] === cur ? '#12315b' : '#5b6f82', line: s[0] === cur ? '#1677d2' : 'transparent', bg: s[0] === cur ? '#ffffff' : 'transparent', bline: s[0] === cur ? '#dbe6f0' : 'transparent' })),
         actions: page === 'review' ? [{ label: '← กลับไปที่คิว', go: this.go('queue'), bg: '#ffffff', fg: '#12315b', line: '#cfdcea' }] : []
       },
-      blocks: page === 'review' ? [] : this.blocks(page, role),
+      blocks: (page === 'review' ? [] : this.blocks(page, role)).map(bl => (bl && bl.isBar) ? Object.assign({}, bl, { items: (bl.items || []).map(it => Object.assign({ isBtn: !it.href }, it, { isBtn: !it.href })) }) : bl),
       isReview: page === 'review',
       rv: page === 'review' ? this.reviewVals(role) : { tabs: [], info: {}, stages: [], veto: {}, e2: [], sections: [], factors: [], items: [], perm: [], bitems: [], checks: [], signs: [], history: [], evidence: [] }
     };
